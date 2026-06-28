@@ -1,8 +1,8 @@
 {
   "name": "@kungfu-trader/action-merge-close-issue",
-  "version": "1.0.2",
+  "version": "1.0.3-alpha.9",
   "main": "dist/index.js",
-  "repository": "https://github.com/kungfu-trader/action-merge-close-issue",
+  "repository": "https://github.com/kungfu-systems/action-merge-close-issue",
   "author": "Kungfu Trader",
   "license": "Apache-2.0",
   "scripts": {
@@ -15,7 +15,8 @@
     "@actions/core": "^1.8.0",
     "@actions/github": "^5.0.0",
     "@octokit/rest": "^19.0.7",
-    "axios": "^1.4.0"
+    "axios": "^1.4.0",
+    "lodash.sortby": "^4.7.0"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "^1.9.0",
