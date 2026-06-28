@@ -1,13 +1,13 @@
 const { Octokit } = require('@octokit/rest');
 const axios = require('axios');
 
-const doCloseIssue = async function (token, repo, issue_number) {
+const doCloseIssue = async function (token, owner, repo, issue_number) {
   const octokit = new Octokit({
     auth: token,
   });
   try {
-    await octokit.request(`PATCH /repos/kungfu-trader/${repo}/issues/${issue_number}`, {
-      owner: 'kungfu-trader',
+    await octokit.request('PATCH /repos/{owner}/{repo}/issues/{issue_number}', {
+      owner,
       repo: repo,
       issue_number: issue_number,
       state: 'closed',
@@ -27,7 +27,7 @@ const closeIssue = async function (argv, pullRequestNumber, close) {
   });
   const iss = await octokit.graphql(`
     query{
-      repository(name: "${argv.repo}", owner: "kungfu-trader") {
+      repository(name: "${argv.repo}", owner: "${argv.owner}") {
         pullRequest(number: ${pullRequestNumber}) {
           closingIssuesReferences (first: 100) {
             edges {
@@ -54,7 +54,7 @@ const closeIssue = async function (argv, pullRequestNumber, close) {
 
       if (close) {
         console.log('close issue', `prNumber: ${prNumber} body: ${body}, title: ${title} repo: ${argv.repo}`);
-        await doCloseIssue(argv.token, argv.repo, prNumber);
+        await doCloseIssue(argv.token, argv.owner, argv.repo, prNumber);
         if (lastIdx > 1) {
           console.log(`updateStatus to monday boardId: ${body} itemId: ${itemId} targetStatus: Done`);
           await updateStatus(argv.mondayApi, body, itemId, 'Done');
@@ -104,8 +104,8 @@ exports.getPulls = async function (argv, prNumber) {
     let base = '';
     let matchName;
     do {
-      const pulls = await octokit.request(`GET /repos/kungfu-trader/${argv.repo}/pulls`, {
-        owner: 'kungfu-trader',
+      const pulls = await octokit.request('GET /repos/{owner}/{repo}/pulls', {
+        owner: argv.owner,
         repo: argv.repo,
         state: 'all',
         per_page: 1,
