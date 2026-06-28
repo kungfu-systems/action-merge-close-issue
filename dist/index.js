@@ -96,7 +96,7 @@ const traversePrereleasePulls = async (argv, pullRequestNumber, devPulls, alphaP
 const getPrBatch = async (argv, option, page = 1) => {
   const per_page = 100;
   const pull = await octokit
-    .request(`GET /repos/kungfu-trader/${argv.repo}/pulls`, {
+    .request('GET /repos/{owner}/{repo}/pulls', {
       owner: argv.owner,
       repo: argv.repo,
       per_page,
@@ -127,9 +127,10 @@ const getPrBatch = async (argv, option, page = 1) => {
 
 const getPr = async (argv, pullRequestNumber) => {
   const pull = await octokit
-    .request(`GET /repos/kungfu-trader/${argv.repo}/pulls/${pullRequestNumber}`, {
+    .request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
       owner: argv.owner,
       repo: argv.repo,
+      pull_number: pullRequestNumber,
       headers: {
         'X-GitHub-Api-Version': '2022-11-28',
       },
@@ -256,7 +257,7 @@ const mondayGetBoardInfo = async (mondayapi, boardId) => {
 
 const closeIssue = function (argv, issue_number) {
   return octokit
-    .request(`PATCH /repos/kungfu-trader/${argv.repo}/issues/${issue_number}`, {
+    .request('PATCH /repos/{owner}/{repo}/issues/{issue_number}', {
       owner: argv.owner,
       repo: argv.repo,
       issue_number,

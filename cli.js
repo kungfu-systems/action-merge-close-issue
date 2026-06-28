@@ -7,6 +7,6 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
   .option('pullRequestNumber', { description: 'pullRequestNumber', type: 'number' })
   .help().argv;
 
-// node cli.js --token token --owner kungfu-trader --repo test-rollback-packages --pullRequestNumber 88
+// node cli.js --token token --owner kungfu-systems --repo test-rollback-packages --pullRequestNumber 88
 lib.getPulls(argv, argv.pullRequestNumber).catch(console.error);
 // lib.closeIssue(argv).catch(console.error);
